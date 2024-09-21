@@ -9,6 +9,9 @@ export default {
       fontFamily: {
         inter: ['Inter', 'sans-serif']
       },
+      backgroundImage: {
+        'app': 'URL("/img/1.jpg")'
+      }
     },
   },
   plugins: [],
