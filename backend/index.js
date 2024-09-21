@@ -1,11 +1,16 @@
-const express = require('express')
+import express from 'express'
 
 // Configurar App
 const app = express()
 
 // Definir ruta
 app.get('/', (req, res) => {
-    res.send('Hola')
+    const product = {
+        id: 1,
+        price: 10,
+        name: 'Laptop'
+    }
+    res.json(product)
 })
 
 // Definir puerto
