@@ -1,5 +1,8 @@
 <script setup>
 import { useRoute } from 'vue-router'
+import { useAppointmentsStore } from '@/stores/appointments.js'
+
+const appointments = useAppointmentsStore()
 
 const route = useRoute()
 </script>
@@ -15,10 +18,15 @@ const route = useRoute()
     </RouterLink>
     <RouterLink
         :to="{name: 'appointment-details'}"
-        class="flex-1 text-center p-3 uppercase font-extrabold hover:text-white hover:bg-blue-600"
-        :class="route.name === 'appointment-details' ? 'bg-blue-500 text-white' : 'text-blue-500 bg-white'"
+        class="flex-1"
     >
-      Cita y resumen
+      <button
+          class="p-3 text-center w-full uppercase font-extrabold hover:text-white hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-400"
+          :class="route.name === 'appointment-details' ? 'bg-blue-500 text-white' : 'text-blue-500 bg-white'"
+          :disabled="appointments.noServicesSelected"
+      >
+        Cita y resumen
+      </button>
     </RouterLink>
   </nav>
   <RouterView />
