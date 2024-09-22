@@ -1,5 +1,4 @@
 <script setup>
-import ServicesItem from "@/components/ServiceItem.vue";
 import { useServicesStore } from '@/stores/services'
 import ServiceItem from '@/components/ServiceItem.vue'
 
