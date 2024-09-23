@@ -81,8 +81,13 @@ const logIn = async (req, res) => {
     }
 }
 
+const user = async (req, res) => {
+    return res.json(req.user)
+}
+
 export {
     register,
     verify,
-    logIn
+    logIn,
+    user
 }
