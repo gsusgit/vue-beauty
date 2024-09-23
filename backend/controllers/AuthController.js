@@ -82,7 +82,8 @@ const logIn = async (req, res) => {
 }
 
 const user = async (req, res) => {
-    return res.json(req.user)
+    const {user} = req
+    return res.json(user)
 }
 
 export {

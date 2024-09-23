@@ -9,5 +9,12 @@ export default {
     },
     verify(token) {
         return api.get(`/auth/verify/${token}`)
+    },
+    checkToken(token) {
+        return api.get('/auth/user', {
+            headers: {
+                Authorization: token
+            }
+        })
     }
 }

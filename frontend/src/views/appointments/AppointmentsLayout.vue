@@ -1,3 +1,9 @@
+<script setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+</script>
+
 <template>
   <div class="flex justify-between">
     <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
@@ -13,14 +19,17 @@
         >Cerrar sesión</button>
       </div>
       <nav class="flex gap-2 items-center justify-end">
-        <button
-          type="button"
-          class="p-3 text-gray-200 uppercase text-xs font-black rounded-lg"
+        <RouterLink
+            :to="{name: 'my-appointments'}"
+            :class="route.name === 'my-appointments' ? 'bg-blue-700 text-gray-200' : 'bg-white text-blue-700'"
+            class="p-3 uppercase text-xs font-black rounded-lg hover:text-white hover:bg-blue-700"
         >
-          Mis citas</button>
+          Mis citas
+        </RouterLink>
         <RouterLink
             :to="{name: 'new-appointment'}"
-            class="p-3 text-gray-200 uppercase text-xs font-black rounded-lg bg-blue-700"
+            :class="route.name === 'new-appointment' ? 'bg-blue-700 text-gray-200' : 'bg-white text-blue-700'"
+            class="p-3 uppercase text-xs font-black rounded-lg hover:text-white hover:bg-blue-700"
         >
           Nueva cita
         </RouterLink>

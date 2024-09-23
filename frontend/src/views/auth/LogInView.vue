@@ -17,7 +17,7 @@ const logIn = async formData => {
   try {
     const {data: {token}} = await authAPI.login(formData)
     localStorage.setItem('vuebeautytoken', JSON.stringify(token))
-    router.push({name: 'new-appointment'})
+    router.push({name: 'my-appointments'})
   } catch (error) {
     toast.open({
       message: error.response.data.msg,
