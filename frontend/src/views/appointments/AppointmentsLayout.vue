@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <div class="flex justify-between">
     <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">

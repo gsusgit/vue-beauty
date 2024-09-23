@@ -32,6 +32,28 @@ const router = createRouter({
           ]
         }
       ]
+    },
+    {
+      path: '/auth',
+      name: 'auth',
+      component: () => import('../views/auth/AuthLayout.vue'),
+      children: [
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('../views/auth/LogInView.vue')
+        },
+        {
+          path: 'registro',
+          name: 'register',
+          component: () => import('../views/auth/RegisterView.vue')
+        },
+        {
+          path: 'confirmar-cuenta/:token',
+          name: 'account-verification',
+          component: () => import('../views/auth/VerifyAccountView.vue')
+        }
+      ]
     }
   ]
 })
