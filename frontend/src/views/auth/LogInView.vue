@@ -15,7 +15,8 @@ const router = useRouter()
 
 const logIn = async formData => {
   try {
-    await authAPI.login(formData)
+    const {data: {token}} = await authAPI.login(formData)
+    localStorage.setItem('vuebeautytoken', JSON.stringify(token))
     router.push({name: 'new-appointment'})
   } catch (error) {
     toast.open({
@@ -39,15 +40,14 @@ const logIn = async formData => {
           :value="formData"
       >
         <FormKit
-            type="email"
+            type="text"
             label="Email"
             name="email"
             placeholder="Email"
-            validation="required|email"
+            validation="required"
             v-model.trim="formData.email"
             :validation-messages="{
-                required: 'El email es obligatorio',
-                email: 'El email no tiene un formato correcto'
+                required: 'El email es obligatorio'
             }"
         />
         <FormKit

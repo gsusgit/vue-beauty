@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import jwt from 'jsonwebtoken'
 
 function validateObjectId(id, res) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -16,18 +17,17 @@ async function handleNotFoundError(res, message) {
     })
 }
 
-async function handleError(res, code, message) {
-    const error = new Error(message)
-    return res.status(code).json({
-        msg: error.message
+const uniqueId = () => Date.now().toString(32) + Math.random().toString(32).substring(2)
+
+const generateJWT = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: '30d'
     })
 }
-
-const uniqueId = () => Date.now().toString(32) + Math.random().toString(32).substring(2)
 
 export {
     validateObjectId,
     handleNotFoundError,
     uniqueId,
-    handleError
+    generateJWT
 }

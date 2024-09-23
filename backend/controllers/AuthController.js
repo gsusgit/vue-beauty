@@ -1,19 +1,22 @@
 import User from '../models/User.js'
-import { handleError } from '../utils/index.js'
+import { generateJWT } from '../utils/index.js'
 import { sendEmailVerification, sendEmailUserVerified } from '../emails/authEmailService.js'
 
 const register = async (req, res) => {
     if (Object.values(req.body).includes('')) {
-        await handleError(res, 400, 'Todos los campos son obligatorios')
+        const error = new Error('Todos los campos son obligatorios')
+        return res.status(400).json({msg: error.message})
     }
     const { email, password } = req.body
     const userExists = await User.findOne({email})
     if (userExists) {
-        await handleError(res, 400, 'Ya existe un usuario con ese email')
+        const error = new Error('Ya existe un usuario con ese email')
+        return res.status(400).json({msg: error.message})
     }
     const MIN_PASSWORD_LENGTH = 8
     if (password.trim().length < MIN_PASSWORD_LENGTH) {
-        await handleError(res, 400, `El password ha de tener como minimo ${MIN_PASSWORD_LENGTH} caracteres`)
+        const error = new Error(`El password ha de tener como minimo ${MIN_PASSWORD_LENGTH} caracteres`)
+        return res.status(400).json({msg: error.message})
     }
     try {
         const user = new User(req.body)
@@ -36,7 +39,8 @@ const verify = async (req, res) => {
     const {token} = req.params
     const user = await User.findOne({token})
     if (!user) {
-        await handleError(res, 401, 'Token no válido')
+        const error = new Error('Token no válido')
+        return res.status(401).json({msg: error.message})
     }
     try {
         const { name, email } = user
@@ -57,23 +61,19 @@ const verify = async (req, res) => {
 
 const logIn = async (req, res) => {
     const {email, password } = req.body
-    // Revisar que el usuario exista
     const user = await User.findOne({email})
     if(!user) {
         const error = new Error('El Usuario no existe')
         return res.status(401).json({msg: error.message})
     }
-
-    // Revisar si el usuario confirmo su cuenta
     if(!user.verified) {
         const error = new Error('Tu cuenta no ha sido confirmado aún')
         return res.status(401).json({msg: error.message})
     }
-
-    // Comprobar el password
     if(await user.checkPassword(password)) {
+        const token =generateJWT(user._id)
         return res.json({
-            msg: 'Inicio de sesión satisfactorio'
+            token: token
         })
     } else {
         const error = new Error('El password es incorrecto')
