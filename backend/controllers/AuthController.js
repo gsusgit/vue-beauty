@@ -36,7 +36,7 @@ const verify = async (req, res) => {
     const {token} = req.params
     const user = await User.findOne({token})
     if (!user) {
-        await handleError(res, 401, 'No existe un usuario con ese token o es un token no válido, puede que el usuario ya esté verificado')
+        await handleError(res, 401, 'Token no válido')
     }
     try {
         const { name, email } = user
