@@ -33,7 +33,7 @@ export async function sendEmailUserVerified({name, email}) {
         subject: "Vue Beauty - Usuario verificado correctamente",
         html: `<h3 style="font-size:1.4rem;line-height:1.8rem;font-weight:normal;font-family:Arial,sans-serif;">Hola, <b>${name}</b></h3>
                <p style="font-family:Arial,sans-serif;">Bienvenido a Vue Beauty.</p>
-               <p style="font-family:Arial,sans-serif;">Le confirmamos que su cuenta de usuario ha sido verificada correctamente. A continuación puede iniciar sesión en la <a href="http://localhost:5173/login">siguiente dirección</a></p>
+               <p style="font-family:Arial,sans-serif;">Le confirmamos que su cuenta de usuario ha sido verificada correctamente. A continuación puede iniciar sesión en la <a href="${process.env.FRONTEND_URL}/login">siguiente dirección</a></p>
                <h1 style="font-family:Arial,sans-serif;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" width="28" alt="Vue Logo"><span style="font-size:2rem;line-height:2.3rem;margin-left:3px;">ue Beauty</span></h1></a>`
     })
     console.log('Mensaje de cuenta verificada enviado', info.messageId)
