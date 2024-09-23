@@ -21,7 +21,6 @@ db()
 
 // Configurar CORS
 const whitelist = [process.env.FRONTEND_URL]
-console.log(process.argv)
 
 if(process.argv[2] === '--postman') {
     whitelist.push(undefined)
