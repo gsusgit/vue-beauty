@@ -1,7 +1,10 @@
 <script setup>
 import { useAppointmentsStore } from '@/stores/appointments.js'
+import { useUserStore } from '@/stores/user.js'
 
 const appointments = useAppointmentsStore()
+const user = useUserStore()
+
 </script>
 
 <template>

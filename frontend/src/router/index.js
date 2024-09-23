@@ -1,10 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import authAPI from '@/api/authAPI.js'
 import HomeView from '../views/HomeView.vue'
 import AppointmentsLayout from '@/views/appointments/AppointmentsLayout.vue'
-import authAPI from '@/api/authAPI.js'
-import { inject } from 'vue'
-
-const toast = inject('toast')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

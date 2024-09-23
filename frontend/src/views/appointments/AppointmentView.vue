@@ -62,7 +62,7 @@ watch(appointments, () => {
         </div>
       </div>
     </div>
-    <div v-if="appointments.isValidReservation" class="flex justify-end">
+    <div v-if="appointments.isValidReservation" class="flex justify-end mt-10">
       <button
           class="text-white bg-blue-500 p-3 uppercase font-black w-full md:w-auto rounded-lg"
           @click="appointments.createAppointment"

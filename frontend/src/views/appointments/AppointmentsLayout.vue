@@ -1,5 +1,8 @@
 <script setup>
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user.js'
+
+const user = useUserStore()
 
 const route = useRoute()
 </script>
@@ -12,10 +15,11 @@ const route = useRoute()
     </a>
     <div class="flex flex-col space-y-5">
       <div class="flex gap-2 items-center">
-        <p class="text-white text-right">Hola: Usuario</p>
+        <p class="text-white text-right">Hola {{user.userData.name}}</p>
         <button
             type="button"
             class="bg-red-600 hover:bgred-700 p-2 text-white uppercase text-xs font-extrabold rounded-lg"
+            @click="user.logOut()"
         >Cerrar sesión</button>
       </div>
       <nav class="flex gap-2 items-center justify-end">
