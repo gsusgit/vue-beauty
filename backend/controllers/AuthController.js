@@ -56,25 +56,29 @@ const verify = async (req, res) => {
 }
 
 const logIn = async (req, res) => {
-    if (Object.values(req.body).includes('')) {
-        await handleError(res, 400, 'Todos los campos son obligatorios')
-    }
-    const { email, password } = req.body
+    const {email, password } = req.body
+    // Revisar que el usuario exista
     const user = await User.findOne({email})
-    if (!user) {
-        await handleError(res, 401, 'El usuario no existe')
+    if(!user) {
+        const error = new Error('El Usuario no existe')
+        return res.status(401).json({msg: error.message})
     }
-    if (!user.verified) {
-        await handleError(res, 401, 'Tu cuenta aún no ha sido verificada')
+
+    // Revisar si el usuario confirmo su cuenta
+    if(!user.verified) {
+        const error = new Error('Tu cuenta no ha sido confirmado aún')
+        return res.status(401).json({msg: error.message})
     }
-    if (await user.checkPassword(password)) {
+
+    // Comprobar el password
+    if(await user.checkPassword(password)) {
         return res.json({
             msg: 'Inicio de sesión satisfactorio'
         })
     } else {
-        await handleError(res, 401, 'Credenciales incorrectas')
+        const error = new Error('El password es incorrecto')
+        return res.status(401).json({msg: error.message})
     }
-
 }
 
 export {
