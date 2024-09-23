@@ -1,6 +1,7 @@
 <script setup>
-import { FormKit } from '@formkit/vue'
-import { reactive } from 'vue'
+import authAPI from '@/api/authAPI.js'
+import { FormKit, reset } from '@formkit/vue'
+import { reactive, inject } from 'vue'
 
 const formData = reactive({
   name: '',
@@ -8,12 +9,22 @@ const formData = reactive({
   password: ''
 })
 
-const createAccount = async data => {
-  const { password_confirm, ...userData } = data
+const toast = inject('toast')
+
+const createAccount = async formData => {
+  const { password_confirm, ...userData } = formData
   try {
-    console.log(userData)
+    const {data} = await authAPI.register(userData)
+    toast.open({
+      message: data.msg,
+      type: 'success'
+    })
+    reset('registerForm')
   } catch (error) {
-    console.log(error)
+    toast.open({
+      message: error.response.data.msg,
+      type: 'error'
+    })
   }
 }
 </script>
@@ -25,6 +36,7 @@ const createAccount = async data => {
     <div class="mt-10">
       <FormKit
           type="form"
+          id="registerForm"
           submit-label="Crear cuenta"
           incomplete-message="No se pudo enviar, revisa los errores"
           @submit="createAccount"
