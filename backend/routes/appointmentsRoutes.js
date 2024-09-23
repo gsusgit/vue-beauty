@@ -1,10 +1,11 @@
 import express from 'express'
 import { createAppointment } from '../controllers/AppointmentsController.js'
+import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
 router.route('/')
-    .post(createAppointment)
+    .post(authMiddleware, createAppointment)
 
 
 export default router

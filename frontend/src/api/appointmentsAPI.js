@@ -1,7 +1,14 @@
 import api from '@/lib/axios.js'
 
 export default {
-    createAppointment() {
-        return api.post('/appointments')
+    createAppointment(data) {
+        const storage = localStorage.getItem('vuebeautytoken')
+        const token = 'Bearer ' + JSON.parse(storage)
+        return api.post('/appointments', data, {
+            headers: {
+                Authorization: token
+            }
+        })
     }
 }
+

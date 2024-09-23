@@ -1,23 +1,27 @@
 import mongoose from "mongoose"
 
 const appointmentsSchema = mongoose.Schema({
-    services: {
-        type: Array,
-        required: true
-    },
+    services: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Services'
+        }
+    ],
     date: {
-        type: String,
-        required: true,
-        trim: true
+        type: Date,
+        required: true
     },
     time: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     totalCost: {
         type: Number,
         required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 })
 
