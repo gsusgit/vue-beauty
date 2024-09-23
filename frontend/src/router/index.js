@@ -72,7 +72,7 @@ router.beforeEach( async (to, from, next) => {
     if (storage) {
       const token = 'Bearer ' + JSON.parse(storage)
       try {
-        const {data} = await authAPI.checkToken(token)
+        await authAPI.checkToken(token)
         next()
       } catch {
         next({name: 'login'})
