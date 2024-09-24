@@ -56,7 +56,7 @@ watch(appointments, () => {
               class="block rounded-lg text-xl font-black p-4 hover:bg-blue-500 hover:text-white disabled:bg-gray-400 disabled:text-gray-300 disabled:cursor-default"
               :class="appointments.time === hour ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'"
               v-for="hour in appointments.updatedHours"
-              @click="appointments.time = hour"
+              @click="appointments.time = hour.hour"
               :disabled="hour.available"
           >
             {{hour.hour}}
