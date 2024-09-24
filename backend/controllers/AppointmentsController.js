@@ -1,4 +1,5 @@
 import Appointments from '../models/Appointments.js'
+import { parse, formatISO, startOfDay, isValid, startOfTomorrow } from 'date-fns'
 
 const createAppointment = async (req, res) => {
     if (Object.values(req.body).includes('')) {
@@ -49,8 +50,24 @@ const getAppointmentsByUserId = async (req, res) => {
     }
 }
 
+const getAppointmentsByDate = async (req, res ) => {
+    const { date } = req.query
+    const newDate = parse(date, 'dd/MM/yyyy', new Date())
+    if(!isValid(newDate)) {
+        const error = new Error('Fecha no válida')
+        return res.status(400).json({  msg: error.message })
+    }
+    const isoDate = formatISO(newDate)
+    const appointments = await Appointments.find({ date: {
+            $gte : startOfDay(new Date(isoDate)),
+            $lte: startOfTomorrow(new Date(isoDate))
+        }}).select('time')
+    return res.json(appointments)
+}
+
 export {
     createAppointment,
     getAppointments,
-    getAppointmentsByUserId
+    getAppointmentsByUserId,
+    getAppointmentsByDate
 }

@@ -44,7 +44,7 @@ export const useAppointmentsStore = defineStore('appointments', () => {
             user: user.userData._id
         }
         try {
-            const {data} = await appointmentsAPI.createAppointment(appointment)
+            const {data} = await appointmentsAPI.create(appointment)
             toast.open({
                 message: data.msg,
                 type: 'success'

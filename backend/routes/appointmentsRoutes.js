@@ -1,14 +1,13 @@
 import express from 'express'
-import { createAppointment, getAppointments, getAppointmentsByUserId } from '../controllers/AppointmentsController.js'
+import { createAppointment, getAppointments, getAppointmentsByUserId, getAppointmentsByDate } from '../controllers/AppointmentsController.js'
 import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
 router.route('/')
     .post(authMiddleware, createAppointment)
-
-router.route('/')
-    .get(authMiddleware, getAppointments)
+    // .get(authMiddleware, getAppointments) // colapsa con la de fecha
+    .get(authMiddleware, getAppointmentsByDate)
 
 router.route('/:userId')
     .get(authMiddleware, getAppointmentsByUserId)
