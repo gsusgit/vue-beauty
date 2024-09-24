@@ -67,16 +67,12 @@ const router = createRouter({
 
 router.beforeEach( async (to, from, next) => {
   const requiresAuth = to.matched.some(url => url.meta.requiresAuth)
-  if (requiresAuth) {
-    const storage = localStorage.getItem('vuebeautytoken')
-    if (storage) {
-      const token = 'Bearer ' + JSON.parse(storage)
-      try {
-        await authAPI.checkToken(token)
-        next()
-      } catch {
-        next({name: 'login'})
-      }
+  if(requiresAuth) {
+    try {
+      await authAPI.checkToken()
+      next()
+    } catch (error) {
+      next({name: 'login'})
     }
   } else {
     next()

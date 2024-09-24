@@ -6,19 +6,14 @@ import authAPI from '@/api/authAPI.js'
 export const useUserStore = defineStore('user', () => {
 
     const userData = ref({})
-    const token = ref('')
     const router = useRouter()
 
     onMounted(async () => {
-        const storage = localStorage.getItem('vuebeautytoken')
-        if (storage) {
-            token.value = 'Bearer ' + JSON.parse(storage)
-            try {
-                const {data} = await authAPI.checkToken(token.value)
-                userData.value = data
-            } catch (error) {
-                console.log(error)
-            }
+        try {
+            const { data } = await authAPI.checkToken()
+            userData.value = data
+        } catch (error) {
+            console.log(error)
         }
     })
 

@@ -1,23 +1,21 @@
 <script setup>
-import authAPI from '@/api/authAPI.js'
 import { FormKit } from '@formkit/vue'
-import { reactive, inject } from 'vue'
+import { inject, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import authAPI from '@/api/authAPI.js'
 
 const formData = reactive({
-  email: '',
-  password: ''
+  email: 'jesusfer80@gmail.com',
+  password: '12345678'
 })
-
+const router = useRouter()
 const toast = inject('toast')
 
-const router = useRouter()
-
-const logIn = async formData => {
+const logIn = async (formData) => {
   try {
     const {data: {token}} = await authAPI.login(formData)
-    localStorage.setItem('vuebeautytoken', JSON.stringify(token))
-    router.push({name: 'my-appointments'})
+    localStorage.setItem('vuebeautytoken', token)
+    await router.push({name: 'my-appointments'})
   } catch (error) {
     toast.open({
       message: error.response.data.msg,
