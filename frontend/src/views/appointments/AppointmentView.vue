@@ -35,24 +35,25 @@ watch(appointments, () => {
           :service="service"
           :key="service._id"
       />
-      <p class="text-2xl text-white mt-5 text-right">Total a pagar: <span class="font-black">{{formatCurrency(appointments.totalCost)}}</span></p>
+      <p class="text-2xl text-white mt-1 text-right">Total a pagar: <span class="font-black">{{formatCurrency(appointments.totalCost)}}</span></p>
     </div>
-    <div class="space-y-8">
-      <h3 class="text-3xl font-extrabold text-white">Fecha y hora</h3>
-      <div class="lg:flex gap-5 items-start">
-        <div class="w-full lg:w-96 flex justify-start rounded-lg">
-          <VueTailwindDatepicker
-              i18n="es-mx"
-              as-single
-              no-input
-              :formatter="formatter"
-              :disable-date="disabledDate"
-              v-model="appointments.date"
-          />
-        </div>
-        <div class="flex-1 grid sm:grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0">
+    <div class="flex flex-col md:flex-row mt-12">
+      <div class="w-full md:w-1/2">
+        <h3 class="text-gray-400 font-medium text-xl mb-3">Seleccione un día</h3>
+        <VueTailwindDatepicker
+            i18n="es-mx"
+            as-single
+            no-input
+            :formatter="formatter"
+            :disable-date="disabledDate"
+            v-model="appointments.date"
+        />
+      </div>
+      <div class="w-full md:w-1/2 mt-10 md:mt-0">
+        <h3 class="text-gray-400 font-medium text-xl mb-3">Seleccione una hora</h3>
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
           <button
-              class="block rounded-lg text-xl font-black p-3 hover:bg-blue-500 hover:text-white"
+              class="block rounded-lg text-xl font-black p-4 hover:bg-blue-500 hover:text-white"
               :class="appointments.time === hour ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'"
               v-for="hour in appointments.hours"
               @click="appointments.time = hour"
@@ -62,9 +63,9 @@ watch(appointments, () => {
         </div>
       </div>
     </div>
-    <div v-if="appointments.isValidReservation" class="flex justify-end mt-10">
+    <div v-if="appointments.isValidReservation" class="w-full mt-10">
       <button
-          class="text-white bg-blue-500 p-3 uppercase font-black w-full md:w-auto rounded-lg"
+          class="text-white bg-green-500 p-3 text-xl uppercase font-black w-full md:w-full rounded-lg"
           @click="appointments.createAppointment"
       >
         Confirmar cita
