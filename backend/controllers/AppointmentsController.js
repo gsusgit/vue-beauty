@@ -18,6 +18,39 @@ const createAppointment = async (req, res) => {
     }
 }
 
+const getAppointments = async (req, res) => {
+    try {
+        const appointments = await Appointments.find()
+        if (!appointments) {
+            const error = new Error('No hay citas')
+            return res.status(400).json({
+                msg: error.message
+            })
+        }
+        return res.json(appointments)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getAppointmentsByUserId = async (req, res) => {
+    try {
+        const {userId} = req.params
+        const appointments = await Appointments.find({ user: userId })
+        if (!appointments) {
+            const error = new Error('No hay citas')
+            return res.status(400).json({
+                msg: error.message
+            })
+        }
+        return res.json(appointments)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export {
-    createAppointment
+    createAppointment,
+    getAppointments,
+    getAppointmentsByUserId
 }
