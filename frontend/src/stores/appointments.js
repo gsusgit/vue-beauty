@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, onMounted, ref, inject } from 'vue'
+import { computed, onMounted, ref, inject, watch } from 'vue'
 import { useUserStore } from '@/stores/user.js'
 import appointmentsAPI from '@/api/appointmentsAPI.js'
 import { convertToISO } from '../helpers/date.js'
@@ -14,6 +14,7 @@ export const useAppointmentsStore = defineStore('appointments', () => {
     const user = useUserStore()
     const toast = inject('toast')
     const router = useRouter()
+    const availableHours = ref([])
 
     onMounted(() => {
         const startHour = 10
@@ -22,6 +23,26 @@ export const useAppointmentsStore = defineStore('appointments', () => {
             hours.value.push(hour + ':00')
         }
     })
+
+    watch(date, () => {
+        onDateChanged()
+    })
+
+    async function onDateChanged () {
+        const selectedDate = date.value
+        try {
+            const { data } = await appointmentsAPI.getByDate(selectedDate)
+            availableHours.value = hours.value.map(hour => {
+                const isReserved = data.some(appointment => appointment.time === hour)
+                return {
+                    hour: hour,
+                    available: isReserved
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     function onServiceSelected(service) {
         if (services.value.some(s => s._id === service._id)) {
@@ -80,6 +101,17 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         return services.value.length && date.value.length && time.value.length
     })
 
+    const isDateSelected = computed(() => {
+        return date.value !== ''
+    })
+
+    const updatedHours = computed(() => {
+        if (availableHours.value.length > 0) {
+            return availableHours.value
+        }
+        return hours.value.map(hour => ({ hour, available: true }))
+    })
+
     return {
         onServiceSelected,
         createAppointment,
@@ -90,6 +122,8 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         hours,
         time,
         totalCost,
-        isValidReservation
+        isValidReservation,
+        isDateSelected,
+        updatedHours
     }
 })
