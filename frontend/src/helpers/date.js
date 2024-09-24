@@ -3,7 +3,7 @@ import es from 'date-fns/locale/es'
 
 export function convertToISO(strDate) {
     const newDate = parse(strDate, 'dd/MM/yyyy', new Date())
-    return formatISO(newDate)
+    return formatISO(newDate, { representation: 'date' })
 } 
 
 export function displayDate(date) {

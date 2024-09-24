@@ -1,5 +1,5 @@
 import Appointments from '../models/Appointments.js'
-import { parse, formatISO, startOfDay, isValid, startOfTomorrow } from 'date-fns'
+import { parse, formatISO, startOfDay, endOfDay, isValid } from 'date-fns'
 
 const createAppointment = async (req, res) => {
     if (Object.values(req.body).includes('')) {
@@ -60,7 +60,7 @@ const getAppointmentsByDate = async (req, res ) => {
     const isoDate = formatISO(newDate)
     const appointments = await Appointments.find({ date: {
             $gte : startOfDay(new Date(isoDate)),
-            $lte: startOfTomorrow(new Date(isoDate))
+            $lte: endOfDay(new Date(isoDate))
         }}).select('time')
     return res.json(appointments)
 }
