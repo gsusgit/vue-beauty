@@ -1,5 +1,5 @@
 import express from 'express'
-import { createAppointment, getAppointments, getAppointmentsByUserId, getAppointmentsByDate, getAppointmentById, updateAppointment } from '../controllers/AppointmentsController.js'
+import { createAppointment, getAppointments, getAppointmentsByUserId, getAppointmentsByDate, getAppointmentById, updateAppointment, deleteAppointment } from '../controllers/AppointmentsController.js'
 import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
@@ -12,6 +12,7 @@ router.route('/')
 router.route('/:id')
     .get(authMiddleware, getAppointmentById)
     .put(authMiddleware, updateAppointment)
+    .delete(authMiddleware, deleteAppointment)
 
 router.route('/:userId')
     .get(authMiddleware, getAppointmentsByUserId)
