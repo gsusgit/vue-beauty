@@ -23,11 +23,14 @@ defineProps({
     </div>
     <p class="text-blue-600 text-xl font-black text-right">Total a pagar: {{formatCurrency(appointment.totalCost)}}</p>
     <div class="flex gap-2 items-center">
-      <button
-          class="bg-slate-600 hover:bg-slate-700 rounded-lg p-3 text-white text-sm uppercase font-black flex-1 md:flex-none"
-      >
-        Editar
-      </button>
+      <RouterLink
+          :to="{name: 'edit-appointmnent', params: {id: appointment._id}}">
+        <button
+            class="bg-slate-600 hover:bg-slate-700 rounded-lg p-3 text-white text-sm uppercase font-black flex-1 md:flex-none"
+        >
+          Editar
+        </button>
+      </RouterLink>
       <button
           class="bg-red-600 hover:bg-red-700 rounded-lg p-3 text-white text-sm uppercase font-black flex-1 md:flex-none"
       >

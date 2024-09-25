@@ -9,18 +9,19 @@ const route = useRoute()
 
 <template>
   <div class="flex justify-between">
-    <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
-      <img src="@/assets/logo.svg" class="h-6" alt="Vue Logo">
-      <h1 class="text-2xl lg:text-4xl whitespace-nowrap font-black text-white">ue Beauty</h1>
-    </a>
-    <div class="flex flex-col space-y-5">
+    <h1 class="text-2xl lg:text-6xl font-black text-white">App Salón</h1>
+
+    <div class="flex flex-col space-y-5 items-end">
       <div class="flex gap-2 items-center">
-        <p class="text-white text-right">Hola {{user.userData.name}}</p>
+        <p class="text-white text-right">Hola: {{ user.getUserName }}</p>
+
         <button
             type="button"
-            class="bg-red-600 hover:bgred-700 p-2 text-white uppercase text-xs font-extrabold rounded-lg"
-            @click="user.logOut()"
-        >Cerrar sesión</button>
+            class="bg-red-600 hover:bg-red-700 p-2 text-white uppercase text-xs font-extrabold rounded-lg"
+            @click="user.logOut"
+        >
+          Cerrar Sesión
+        </button>
       </div>
       <nav class="flex gap-2 items-center justify-end">
         <RouterLink

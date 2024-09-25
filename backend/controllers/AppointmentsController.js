@@ -1,5 +1,6 @@
 import Appointments from '../models/Appointments.js'
 import { parse, formatISO, startOfDay, endOfDay, isValid } from 'date-fns'
+import { handleNotFoundError, validateObjectId } from '../utils/index.js'
 
 const createAppointment = async (req, res) => {
     if (Object.values(req.body).includes('')) {
@@ -29,6 +30,21 @@ const getAppointments = async (req, res) => {
             })
         }
         return res.json(appointments)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getAppointmentById = async (req, res) => {
+    try {
+        const {id} = req.params
+        if (validateObjectId(id, res))
+            return
+        const appointment = await Appointments.findById(id).populate('services')
+        if (!appointment) {
+            return handleNotFoundError(res, 'Cita no encontrada')
+        }
+        return res.json(appointment)
     } catch (error) {
         console.log(error)
     }
@@ -68,6 +84,7 @@ const getAppointmentsByDate = async (req, res ) => {
 export {
     createAppointment,
     getAppointments,
+    getAppointmentById,
     getAppointmentsByUserId,
     getAppointmentsByDate
 }
