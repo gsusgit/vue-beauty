@@ -74,6 +74,16 @@ const router = createRouter({
           path: 'confirmar-cuenta/:token',
           name: 'account-verification',
           component: () => import('../views/auth/VerifyAccountView.vue')
+        },
+        {
+          path: 'olvide-password',
+          name: 'forgot-password',
+          component: () => import('../views/auth/ForgotPasswordView.vue')
+        },
+        {
+          path: 'olvide-password/:token',
+          name: 'new-password',
+          component: () => import('../views/auth/NewPasswordView.vue')
         }
       ]
     }

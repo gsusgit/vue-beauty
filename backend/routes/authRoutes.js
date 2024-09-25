@@ -1,5 +1,5 @@
 import express from 'express'
-import { register, verify, logIn, user } from '../controllers/AuthController.js'
+import { register, verify, logIn, user, updatePassword, verifyPasswordResetToken, forgotPassword } from '../controllers/AuthController.js'
 import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
@@ -7,6 +7,10 @@ const router = express.Router()
 router.post('/register', register)
 router.get('/verify/:token', verify)
 router.post('/login', logIn)
+router.post('/forgot-password', forgotPassword)
+router.route('/forgot-password/:token')
+    .get(verifyPasswordResetToken)
+    .post(updatePassword)
 
 // JWT
 router.get('/user', authMiddleware, user)
