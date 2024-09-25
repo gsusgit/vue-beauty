@@ -49,17 +49,17 @@ watch(appointments, () => {
             v-model="appointments.date"
         />
       </div>
-      <div v-if="appointments.isDateSelected" class="w-full md:w-1/2 mt-10 md:mt-0">
+      <div v-if="appointments.isDateSelected" class="w-full md:w-1/2 mt-10 md:mt-0 pl-2">
         <h3 class="text-gray-400 font-medium text-xl mb-3">Seleccione una hora</h3>
         <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
           <button
               class="block rounded-lg text-xl font-black p-4 hover:bg-blue-500 hover:text-white disabled:bg-gray-400 disabled:text-gray-300 disabled:cursor-default"
               :class="appointments.time === hour ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'"
-              v-for="hour in appointments.updatedHours"
-              @click="appointments.time = hour.hour"
-              :disabled="hour.available"
+              v-for="hour in appointments.hours"
+              @click="appointments.time = hour"
+              :disabled="appointments.disableTime(hour) ? true : false"
           >
-            {{hour.hour}}
+            {{hour}}
           </button>
         </div>
       </div>

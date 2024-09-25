@@ -12,7 +12,7 @@ const {id} = route.params
 onMounted(async () => {
   try {
     const {data} = await appointmentsAPI.getAppointment(id)
-    console.log(data)
+    appointments.setSelectedAppointment(data)
   } catch (error) {
     router.push({name: 'my-appointments'})
   }
