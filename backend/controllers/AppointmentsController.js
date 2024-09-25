@@ -1,6 +1,7 @@
 import Appointments from '../models/Appointments.js'
 import { parse, formatISO, startOfDay, endOfDay, isValid } from 'date-fns'
-import { handleNotFoundError, validateObjectId } from '../utils/index.js'
+import { handleNotFoundError, validateObjectId, formatDate } from '../utils/index.js'
+import { sendEmailUpdateAppointment } from '../emails/appointmentEmailService.js'
 
 const createAppointment = async (req, res) => {
     if (Object.values(req.body).includes('')) {
@@ -56,6 +57,42 @@ const getAppointmentById = async (req, res) => {
     }
 }
 
+const updateAppointment = async (req, res) => {
+    const {id} = req.params
+    if (validateObjectId(id, res))
+        return
+    const appointment = await Appointments.findById(id).populate('services')
+    if(!appointment) {
+        return handleNotFoundError('La Cita no existe', res)
+    }
+    if (!appointment) {
+        return handleNotFoundError(res, 'Cita no encontrada')
+    }
+    if (appointment.user.toString() !== req.user._id.toString()) {
+        const error = new Error('Acceso denegado')
+        return res.status(403).json({
+            msg: error.message
+        })
+    }
+    const { date, time, totalAmount, services} = req.body
+    appointment.date = date
+    appointment.time = time
+    appointment.totalAmount = totalAmount
+    appointment.services = services
+    try {
+        const result = await appointment.save()
+        await sendEmailUpdateAppointment({
+            date: formatDate( result.date ),
+            time: result.time
+        })
+        res.json({
+            msg: 'Cita Actualizada Correctamente'
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const getAppointmentsByUserId = async (req, res) => {
     try {
         const {userId} = req.params
@@ -92,5 +129,6 @@ export {
     getAppointments,
     getAppointmentById,
     getAppointmentsByUserId,
-    getAppointmentsByDate
+    getAppointmentsByDate,
+    updateAppointment
 }
