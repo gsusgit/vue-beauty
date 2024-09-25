@@ -44,6 +44,12 @@ const getAppointmentById = async (req, res) => {
         if (!appointment) {
             return handleNotFoundError(res, 'Cita no encontrada')
         }
+        if (appointment.user.toString() !== req.user._id.toString()) {
+            const error = new Error('Acceso denegado')
+            return res.status(403).json({
+                msg: error.message
+            })
+        }
         return res.json(appointment)
     } catch (error) {
         console.log(error)
