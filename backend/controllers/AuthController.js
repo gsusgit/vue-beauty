@@ -150,6 +150,15 @@ const user = async (req, res) => {
     return res.json(user)
 }
 
+const admin = async (req, res) => {
+    const {user} = req
+    if (!user.admin) {
+        const error = new Error('Acción no permitida')
+        return res.status(400).json({msg: error.message})
+    }
+    return res.json(user)
+}
+
 export {
     register,
     verify,
@@ -157,5 +166,6 @@ export {
     user,
     forgotPassword,
     verifyPasswordResetToken,
-    updatePassword
+    updatePassword,
+    admin
 }

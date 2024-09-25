@@ -1,5 +1,5 @@
 import express from 'express'
-import { register, verify, logIn, user, updatePassword, verifyPasswordResetToken, forgotPassword } from '../controllers/AuthController.js'
+import { register, verify, logIn, user, updatePassword, verifyPasswordResetToken, forgotPassword, admin } from '../controllers/AuthController.js'
 import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
@@ -14,5 +14,6 @@ router.route('/forgot-password/:token')
 
 // JWT
 router.get('/user', authMiddleware, user)
+router.get('/admin', authMiddleware, admin)
 
 export default router

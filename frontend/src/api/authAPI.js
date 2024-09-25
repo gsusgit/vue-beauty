@@ -21,5 +21,8 @@ export default {
     },
     updatePassword(token, data) {
         return api.post(`/auth/forgot-password/${token}`, data)
+    },
+    isAdmin() {
+        return api.get('/auth/admin')
     }
 }
