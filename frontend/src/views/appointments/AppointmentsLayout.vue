@@ -13,7 +13,7 @@ const route = useRoute()
 
     <div class="flex flex-col space-y-5 items-end">
       <div class="flex gap-2 items-center">
-        <p class="text-white text-right">Hola: {{ user.getUserName }}</p>
+        <p class="text-white text-right">Hola {{ user.userData.name }}</p>
 
         <button
             type="button"
