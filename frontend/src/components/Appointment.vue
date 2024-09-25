@@ -1,6 +1,9 @@
 <script setup>
 import { formatCurrency } from '../helpers/index.js'
 import { displayDate } from '@/helpers/date.js'
+import { useAppointmentsStore } from '@/stores/appointments.js'
+
+const appointments = useAppointmentsStore()
 
 defineProps({
   appointment: {
@@ -33,6 +36,7 @@ defineProps({
       </RouterLink>
       <button
           class="bg-red-600 hover:bg-red-700 rounded-lg p-3 text-white text-sm uppercase font-black flex-1 md:flex-none"
+          @click="appointments.deleteAppointment(appointment._id)"
       >
         Cancelar
       </button>

@@ -92,6 +92,19 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         }, 100)
     }
 
+    async function deleteAppointment(id) {
+        try {
+            const {data} = await appointmentsAPI.delete(id)
+            toast.open({
+                message: data.msg,
+                type: 'success'
+            })
+            user.appointments = user.appointments.filter(appointment => appointment._id !== id)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     function clearAppointmentData() {
         services.value = []
         date.value = ''
@@ -137,6 +150,7 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         saveAppointment,
         setSelectedAppointment,
         clearAppointmentData,
+        deleteAppointment,
         isServiceSelected,
         noServicesSelected,
         services,
