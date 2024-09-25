@@ -26,20 +26,10 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         }
     })
 
-    // watch(date, () => {
-    //     if (appointmentId.value) {
-    //
-    //     } else {
-    //         onDateChanged()
-    //     }
-    // })
-
     watch(date, async () => {
         time.value = ''
         if(date.value === '') return
-        // Obtenemos las citas
         const {data } = await appointmentsAPI.getByDate(date.value)
-
         if(appointmentId.value) {
             appointmentsByDate.value = data.filter( appointment => appointment._id !==  appointmentId.value)
             time.value = data.filter( appointment => appointment._id ===  appointmentId.value)[0].time
@@ -55,22 +45,6 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         appointmentId.value = appointment._id
     }
 
-    async function onDateChanged () {
-        const selectedDate = date.value
-        try {
-            const { data } = await appointmentsAPI.getByDate(selectedDate)
-            availableHours.value = hours.value.map(hour => {
-                const isReserved = data.some(appointment => appointment.time === hour)
-                return {
-                    hour: hour,
-                    available: isReserved
-                }
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     function onServiceSelected(service) {
         if (services.value.some(s => s._id === service._id)) {
             services.value = services.value.filter(s => s._id !== service._id)
@@ -83,7 +57,7 @@ export const useAppointmentsStore = defineStore('appointments', () => {
         }
     }
 
-    async function createAppointment() {
+    async function saveAppointment() {
         const appointment = {
             services: services.value.map(service => service._id),
             date: convertToISO(date.value),
@@ -91,25 +65,38 @@ export const useAppointmentsStore = defineStore('appointments', () => {
             totalCost: totalCost.value,
             user: user.userData._id
         }
-        try {
-            const {data} = await appointmentsAPI.create(appointment)
-            toast.open({
-                message: data.msg,
-                type: 'success'
-            })
-            router.push({name: 'my-appointments'})
-            setTimeout(() => {
-                clearAppointmentData()
-            }, 100)
-        } catch (error) {
-            console.log(error)
+        if (appointmentId.value) {
+            try {
+                const {data} = await appointmentsAPI.update(appointmentId.value, appointment)
+                toast.open({
+                    message: data.msg,
+                    type: 'success'
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            try {
+                const {data} = await appointmentsAPI.create(appointment)
+                toast.open({
+                    message: data.msg,
+                    type: 'success'
+                })
+            } catch (error) {
+                console.log(error)
+            }
         }
+        await user.getUserAppointments()
+        setTimeout(() => {
+            clearAppointmentData()
+        }, 100)
     }
 
     function clearAppointmentData() {
         services.value = []
         date.value = ''
         time.value = ''
+        appointmentId.value = ''
     }
 
     const isServiceSelected = computed(() => {
@@ -147,7 +134,7 @@ export const useAppointmentsStore = defineStore('appointments', () => {
 
     return {
         onServiceSelected,
-        createAppointment,
+        saveAppointment,
         setSelectedAppointment,
         isServiceSelected,
         noServicesSelected,

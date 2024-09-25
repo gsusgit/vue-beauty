@@ -67,7 +67,7 @@ watch(appointments, () => {
     <div v-if="appointments.isValidReservation" class="w-full mt-10">
       <button
           class="text-white bg-green-500 p-3 text-xl uppercase font-black w-full md:w-full rounded-lg"
-          @click="appointments.createAppointment"
+          @click="appointments.saveAppointment"
       >
         Confirmar cita
       </button>
