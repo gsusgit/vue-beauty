@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import authAPI from '@/api/authAPI.js'
-import HomeView from '../views/HomeView.vue'
 import AppointmentsLayout from '@/views/appointments/AppointmentsLayout.vue'
 
 const router = createRouter({
@@ -8,8 +7,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      redirect: 'auth/login'
     },
     {
       path: '/reservas',
